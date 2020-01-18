@@ -7,7 +7,25 @@
         },
         "rgLocation": {
             "type": "string"
-        }
+        },
+        "VirtualNetworkName": {
+      "type": "string",
+      "defaultValue": "TBSENTVnet"
+    },
+    "VnetAddressPrefix": {
+      "type": "array",
+      "defaultValue": [
+        "192.168.16.0/23"
+      ]
+    },
+        "ddosProtectionPlanEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "allowedValues": [
+        true,
+        false
+      ]
+    }
     },
     "variables": {},
     "resources": [
@@ -17,7 +35,21 @@
             "location": "[parameters('rgLocation')]",
             "name": "[parameters('rgName')]",
             "properties": {}
-        }
+        },
+        {
+      "name": "[parameters('VirtualNetworkName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2019-04-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": "[parameters('vnetAddressPrefix')]"
+        },
+        "virtualNetworkPeerings": [],
+        "enableDdosProtection": "[parameters('ddosProtectionPlanEnabled')]",
+        "enableVmProtection": false
+      }
+    }
     ],
     "outputs": {}
 }
